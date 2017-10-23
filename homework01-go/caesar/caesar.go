@@ -1,6 +1,6 @@
 package caesar
 
-func encrypt_caesar(plaintext string, shift int) string {
+func encryptCaesar(plaintext string, shift int) string {
 	var ciphertext string
 
 	// PUT YOUR CODE HERE
@@ -8,7 +8,7 @@ func encrypt_caesar(plaintext string, shift int) string {
 	return ciphertext
 }
 
-func decrypt_caesar(ciphertext string, shift int) string {
+func decryptCaesar(ciphertext string, shift int) string {
 	var plaintext string
 
 	// PUT YOUR CODE HERE
