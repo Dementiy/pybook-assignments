@@ -14,7 +14,6 @@ func main() {
     plaintext := flag.String("text", "", "")
     flag.Parse()
     keys, err := rsa.GenerateKeypair(*p, *q)
-    fmt.Println(keys)
     if err != nil {
         fmt.Println(err)
         os.Exit(1)
