@@ -1,6 +1,6 @@
 package vigenere
 
-func encrypt_vigenere(plaintext string, keyword string) string {
+func EncryptVigenere(plaintext string, keyword string) string {
     var ciphertext string
 
     // PUT YOUR CODE HERE
@@ -8,7 +8,7 @@ func encrypt_vigenere(plaintext string, keyword string) string {
     return ciphertext
 }
 
-func decrypt_vigenere(ciphertext string, keyword string) string {
+func DecryptVigenere(ciphertext string, keyword string) string {
     var plaintext string
 
     // PUT YOUR CODE HERE
