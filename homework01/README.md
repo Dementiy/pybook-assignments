@@ -1,4 +1,4 @@
-## Шаблоны заданий для (первой работы)[https://dementiy.gitbooks.io/-python/content/lab1.html]
+## Шаблоны заданий для [первой работы](https://dementiy.gitbooks.io/-python/content/lab1.html)
 
 Запустить доктесты можно так:
 ```
