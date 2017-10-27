@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 import random
-from pprint import pprint as pp
 
 
 class GameOfLife:
