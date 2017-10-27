@@ -2,7 +2,7 @@ import unittest
 import random
 import json
 
-from life import Cell, CellList
+from life_with_classes import Cell, CellList
 
 
 class TestCell(unittest.TestCase):
