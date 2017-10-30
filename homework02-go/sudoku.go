@@ -68,6 +68,14 @@ func solve(grid [][]byte) ([][]byte, bool) {
 	// PUT YOUR CODE HERE
 }
 
+func checkSolution(grid [][]byte) bool {
+	// PUT YOUR CODE HERE
+}
+
+func generateSudoku(int N) [][]byte {
+	// PUT YOUR CODE HERE
+}
+
 func main() {
 	puzzles, err := filepath.Glob("puzzle*.txt")
 	if err != nil {
