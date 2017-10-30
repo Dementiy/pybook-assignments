@@ -6,10 +6,13 @@ import (
 	"path/filepath"
 )
 
-func readSudoku(filename string) [][]byte {
-	data, _ := ioutil.ReadFile(filename)
+func readSudoku(filename string) ([][]byte, error) {
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
 	grid := group(filter(data), 9)
-	return grid
+	return grid, nil
 }
 
 func filter(values []byte) []byte {
@@ -72,7 +75,7 @@ func checkSolution(grid [][]byte) bool {
 	// PUT YOUR CODE HERE
 }
 
-func generateSudoku(int N) [][]byte {
+func generateSudoku(N int) [][]byte {
 	// PUT YOUR CODE HERE
 }
 
@@ -84,7 +87,7 @@ func main() {
 	}
 	for _, fname := range puzzles {
 		go func(fname string) {
-			grid := readSudoku(fname)
+			grid, _ := readSudoku(fname)
 			solution, _ := solve(grid)
 			fmt.Println("Solution for", fname)
 			display(solution)
