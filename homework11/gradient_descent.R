@@ -1,7 +1,7 @@
 # Gradient Descent Algorithm
 gradientDescent <- function(X, y, alpha = 0.05, iterations = 1000) {
-  X <- cbind(1, as.matrix(X))           # for convention
-  m <- length(y)                     # number of training examples
+  X <- cbind(1, as.matrix(X))   # for convention
+  m <- length(y)                # number of training examples
   theta <- matrix(rep(0, ncol(X)), nrow = ncol(X)) # parameters
   
   theta_history <- list()  # parameters
