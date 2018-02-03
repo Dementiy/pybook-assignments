@@ -1,18 +1,17 @@
 package vigenere
 
 func EncryptVigenere(plaintext string, keyword string) string {
-    var ciphertext string
+	var ciphertext string
 
-    // PUT YOUR CODE HERE
+	// PUT YOUR CODE HERE
 
-    return ciphertext
+	return ciphertext
 }
 
 func DecryptVigenere(ciphertext string, keyword string) string {
-    var plaintext string
+	var plaintext string
 
-    // PUT YOUR CODE HERE
+	// PUT YOUR CODE HERE
 
-    return plaintext
+	return plaintext
 }
-
