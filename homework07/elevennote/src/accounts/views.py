@@ -7,7 +7,7 @@ from .forms import UserCreationForm
 class RegisterView(FormView):
     template_name = 'registration/register.html'
     form_class = UserCreationForm
-    success_url='/'
+    success_url = '/'
 
     def form_valid(self, form):
         form.save()
