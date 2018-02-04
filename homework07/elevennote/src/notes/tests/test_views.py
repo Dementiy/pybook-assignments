@@ -1,13 +1,20 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
+from django.contrib.auth import get_user_model
 
 from notes.models import Note
 from notes.views import index, detail
+
+User = get_user_model()
 
 
 class IndexTests(TestCase):
 
     def setUp(self):
+        self.user = User.objects.create_user(
+            email="user@example.com",
+            password="secret")
+        self.client.login(email="user@example.com", password="secret")
         self.note = Note.objects.create(
             title="Note title", body="Note description")
         url = reverse('notes:index')
@@ -29,6 +36,10 @@ class IndexTests(TestCase):
 class DetailTests(TestCase):
 
     def setUp(self):
+        self.user = User.objects.create_user(
+            email="user@example.com",
+            password="secret")
+        self.client.login(email="user@example.com", password="secret")
         self.note = Note.objects.create(
             title="Note title", body="Note description")
         url = reverse('notes:detail', kwargs={'note_id': self.note.pk})
