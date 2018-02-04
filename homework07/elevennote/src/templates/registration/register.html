@@ -2,13 +2,13 @@
 
 {% block content %}
 
-<form action="{% url 'accounts:login' %}" method="post" accept-charset="utf-8">
+<form action="{% url 'accounts:register' %}" method="post" accept-charset="utf-8">
     {% csrf_token %}
     {% include 'includes/form.html' %}
     <input type="hidden" name="next" value="{{ next }}" />
     <input class="btn btn-success" type="submit" value="Submit"/>
 </form>
 
-<a href="{% url 'accounts:register' %}">Create a new user</a>
+Already have a user? <a href="{% url 'accounts:login' %}">Sign in</a>
 
 {% endblock %}

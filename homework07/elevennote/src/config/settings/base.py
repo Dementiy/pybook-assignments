@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     'notes',
     'accounts',
 ]
@@ -78,5 +79,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static'
+STATICFILES_DIRS = [
+    root('static'),
+]
 
 AUTH_USER_MODEL = 'accounts.User'
