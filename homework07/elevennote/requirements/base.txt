@@ -4,3 +4,4 @@ python-decouple==3.1
 pytz==2017.3
 uWSGI==2.0.15
 django-widget-tweaks==1.4.1
+django-wysiwyg==0.8.0

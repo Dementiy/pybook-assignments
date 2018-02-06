@@ -2,28 +2,34 @@
 
 <html>
   <head>
+    <title>Elevennote</title>
     <link rel="stylesheet" media="all" href='{% static "bootstrap/css/bootstrap.css" %}'>
+    <link rel="stylesheet" media="all" href='{% static "elevennote/main.css" %}'>
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic|Oxygen:300,400,700" />
+    <script src="{% static "elevennote/jquery.js" %}"></script>
+    <script src="{% static "elevennote/main.js" %}"></script>
+
+    {% block extra_head %}{% endblock %}
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container">
-	    <a class="navbar-brand" href="/">
-	      ElevenNote
-	    </a>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">ElevenNote</a>
+        {% if user.is_authenticated %}
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav mr-auto"></ul>
+          <span class="navbar-text">
+            Signed in as {{ user.email }}.
+            <a href="#">Profile</a> | 
+            <a href="{% url 'accounts:logout' %}">Logout</a>
+          </span>
+        </div>
+        {% endif %}
+      </nav>
 
-	    {% if user.is_authenticated %}
-        <span class="navbar-text">
-          Signed in as {{ user.email }}.
-	      <a href="#">Profile</a> | 
-	      <a href="{% url 'accounts:logout' %}">Logout</a>
-	    </span>
-	    {% endif %}
-      </div>
-    </nav>
-
-    <div class="container" style="padding-top: 10px;">
-      {% block content %}{% endblock %}
-    </div>
+      <main role="main" class="container-fluid mt-4">
+        {% block content %}{% endblock %}
+      </main>
   </body>
 </html>

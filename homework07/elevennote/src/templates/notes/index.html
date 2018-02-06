@@ -2,18 +2,18 @@
 
 {% block content %}
 {% if latest_note_list %}
+    <ul>
     {% for note in latest_note_list %}
-        <p>
-            <a href="{% url 'notes:update' note.id %}">{{ note.title }}</a><br />
-            {{ note.body | safe }}
-        </p>
-        <hr />
+	<p>
+   		<a href="{% url 'notes:update' note.id %}">{{ note.title }}</a><br/>
+   		{{ note.body | safe }}
+	</p>
+	<hr />
     {% endfor %}
+    </ul>
 {% else %}
     <p>No notes are available.</p>
 {% endif %}
-
-<a href="{% url 'notes:create' %}">Create a new note</a>
 
 {% if is_paginated %}
 <div class="pagination">
@@ -32,5 +32,7 @@
   </span>
 </div>
 {% endif %}
+
+<a href="{% url 'notes:create' %}">Create a new note</a>
 
 {% endblock %}
