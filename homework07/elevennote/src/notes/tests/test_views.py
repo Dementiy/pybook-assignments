@@ -46,14 +46,14 @@ class IndexTests(TestCase):
         view = resolve('/notes/')
         self.assertEquals(view.func.view_class, NoteList)
 
-    def test_index_view_contains_link_to_details_page(self):
+    def test_index_view_contains_link_to_update_page(self):
         self.client.login(email="test_user1@example.com", password="secret")
         index_page_url = reverse('notes:index')
         response = self.client.get(index_page_url)
         for note in response.context["latest_note_list"]:
-            note_detail_url = reverse('notes:detail',
+            note_update_url = reverse('notes:update',
                 kwargs={'pk': note.pk})
-            self.assertContains(response, f'href="{note_detail_url}"')
+            self.assertContains(response, f'href="{note_update_url}"')
 
     def test_index_view_contains_link_to_create_page(self):
         self.client.login(email="test_user1@example.com", password="secret")
@@ -174,4 +174,69 @@ class CreateViewTest(TestCase):
             {'title': '', 'body': ''})
         self.assertFormError(response, "form", "title", "This field is required.")
         self.assertFormError(response, "form", "body", "This field is required.")
+
+
+class UpdateViewTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email="user@example.com",
+            password="secret")
+        self.note = Note.objects.create(
+            title="Note title", body="Note description", owner=self.user)
+
+    def test_redirect_if_not_logged_in(self):
+        update_page_url = reverse('notes:update', kwargs={'pk': self.note.pk})
+        response = self.client.get(update_page_url)
+        self.assertRedirects(response, f"/accounts/login/?next={update_page_url}")
+
+    def test_create_view_status_code(self):
+        self.client.login(email="user@example.com", password="secret")
+        update_page_url = reverse('notes:update', kwargs={'pk': self.note.pk})
+        response = self.client.get(update_page_url)
+        self.assertEquals(response.status_code, 200)
+
+    def test_uses_correct_template(self):
+        self.client.login(email="user@example.com", password="secret")
+        update_page_url = reverse('notes:update', kwargs={'pk': self.note.pk})
+        response = self.client.get(update_page_url)
+        self.assertTemplateUsed(response, 'notes/form.html')
+
+    def test_success_url(self):
+        self.client.login(email="user@example.com", password="secret")
+        update_page_url = reverse('notes:update', kwargs={'pk': self.note.pk})
+        response = self.client.post(update_page_url,
+            {'title': 'New note title', 'body': 'New note body'})
+        self.assertRedirects(response, update_page_url)
+
+    def test_form_success(self):
+        self.client.login(email="user@example.com", password="secret")
+        update_page_url = reverse('notes:update', kwargs={'pk': self.note.pk})
+        self.client.post(update_page_url,
+            {'title': 'New note title', 'body': 'New note body'})
+        note = Note.objects.first()
+        self.assertEquals(note.title, 'New note title')
+        self.assertEquals(note.body, 'New note body')
+
+    def test_form_invalid(self):
+        self.client.login(email="user@example.com", password="secret")
+        update_page_url = reverse('notes:update', kwargs={'pk': self.note.pk})
+        response = self.client.post(update_page_url,
+            {'title': '', 'body': ''})
+        self.assertFormError(response, "form", "title", "This field is required.")
+        self.assertFormError(response, "form", "body", "This field is required.")
+
+    def test_only_owner_can_update_note(self):
+        other_user = User.objects.create_user(
+            email="other_user@example.com",
+            password="secret")
+        self.client.login(email="other_user@example.com", password="secret")
+        update_page_url = reverse('notes:update', kwargs={'pk': self.note.pk})
+        response = self.client.post(update_page_url,
+            {'title': 'New note title', 'body': 'New note body'})
+        self.assertEquals(response.status_code, 404)
+        note = Note.objects.first()
+        self.assertEquals(note.title, 'Note title')
+        self.assertEquals(note.body, 'Note description')
+        self.assertEquals(note.owner, self.user)
 
