@@ -55,6 +55,12 @@ class IndexTests(TestCase):
                 kwargs={'pk': note.pk})
             self.assertContains(response, f'href="{note_detail_url}"')
 
+    def test_index_view_contains_link_to_create_page(self):
+        self.client.login(email="test_user1@example.com", password="secret")
+        index_page_url = reverse('notes:index')
+        response = self.client.get(index_page_url)
+        self.assertContains(response, 'href="{}"'.format(reverse('notes:create')))
+
     def test_notes_ordered_by_pub_dates(self):
         self.client.login(email="test_user1@example.com", password="secret")
         index_page_url = reverse('notes:index')
@@ -116,4 +122,56 @@ class DetailTests(TestCase):
         url = reverse('notes:detail', kwargs={'pk': self.note.pk})
         response = self.client.get(url)
         self.assertEquals(response.status_code, 404)
+
+
+class CreateViewTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email="user@example.com",
+            password="secret")
+
+    def test_redirect_if_not_logged_in(self):
+        create_page_url = reverse('notes:create')
+        response = self.client.get(create_page_url)
+        self.assertRedirects(response, f"/accounts/login/?next=/notes/new/")
+
+    def test_create_view_status_code(self):
+        self.client.login(email="user@example.com", password="secret")
+        create_page_url = reverse('notes:create')
+        response = self.client.get(create_page_url)
+        self.assertEquals(response.status_code, 200)
+
+    def test_uses_correct_template(self):
+        self.client.login(email="user@example.com", password="secret")
+        create_page_url = reverse('notes:create')
+        response = self.client.get(create_page_url)
+        self.assertTemplateUsed(response, 'notes/form.html')
+
+    def test_redirects_to_index_page(self):
+        self.client.login(email="user@example.com", password="secret")
+        index_page_url = reverse('notes:index')
+        create_page_url = reverse('notes:create')
+        response = self.client.post(create_page_url,
+            {'title': 'Note Title', 'body': 'Note body'})
+        self.assertRedirects(response, index_page_url)
+
+    def test_form_success(self):
+        self.client.login(email="user@example.com", password="secret")
+        create_page_url = reverse('notes:create')
+        self.client.post(create_page_url,
+            {'title': 'Note title', 'body': 'Note body'})
+        note = Note.objects.first()
+        self.assertEquals(note.title, 'Note title')
+        self.assertEquals(note.body, 'Note body')
+        self.assertEquals(note.owner, self.user)
+        self.assertTrue(note.was_published_recently())
+
+    def test_form_invalid(self):
+        self.client.login(email="user@example.com", password="secret")
+        create_page_url = reverse('notes:create')
+        response = self.client.post(create_page_url,
+            {'title': '', 'body': ''})
+        self.assertFormError(response, "form", "title", "This field is required.")
+        self.assertFormError(response, "form", "body", "This field is required.")
 
