@@ -7,6 +7,7 @@ from django.urls import reverse, reverse_lazy
 
 from .models import Note
 from .forms import NoteForm
+from .mixins import NoteMixin
 
 
 class NoteList(LoginRequiredMixin, ListView):
@@ -27,7 +28,7 @@ class NoteDetail(LoginRequiredMixin, DetailView):
         return Note.objects.filter(owner=self.request.user)
 
 
-class NoteCreate(LoginRequiredMixin, CreateView):
+class NoteCreate(LoginRequiredMixin, NoteMixin, CreateView):
     form_class = NoteForm
     template_name = 'notes/form.html'
     success_url = reverse_lazy('notes:index')
@@ -37,7 +38,7 @@ class NoteCreate(LoginRequiredMixin, CreateView):
         return super(NoteCreate, self).form_valid(form)
 
 
-class NoteUpdate(LoginRequiredMixin, UpdateView):
+class NoteUpdate(LoginRequiredMixin, NoteMixin, UpdateView):
     model = Note
     form_class = NoteForm
     template_name = 'notes/form.html'

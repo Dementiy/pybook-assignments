@@ -175,6 +175,12 @@ class CreateViewTest(TestCase):
         self.assertFormError(response, "form", "title", "This field is required.")
         self.assertFormError(response, "form", "body", "This field is required.")
 
+    def test_response_contains_notes_list(self):
+        self.client.login(email="user@example.com", password="secret")
+        create_page_url = reverse('notes:create')
+        response = self.client.get(create_page_url)
+        self.assertIn('notes', response.context)
+
 
 class UpdateViewTest(TestCase):
 
@@ -239,4 +245,13 @@ class UpdateViewTest(TestCase):
         self.assertEquals(note.title, 'Note title')
         self.assertEquals(note.body, 'Note description')
         self.assertEquals(note.owner, self.user)
+
+    def test_response_contains_notes_list(self):
+        self.client.login(email="user@example.com", password="secret")
+        update_page_url = reverse('notes:update', kwargs={'pk': self.note.pk})
+        response = self.client.get(update_page_url)
+        self.assertIn('notes', response.context)
+        self.assertQuerysetEqual(
+            response.context['notes'],
+            ['<Note: Note title>'])
 
