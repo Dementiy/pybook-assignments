@@ -22,7 +22,8 @@ class IndexTests(TestCase):
 
         now = datetime.datetime.now()
         self.notes = []
-        self.n = 5
+        self.n = 10
+        self.paginate_by = 5
         for i in range(self.n):
             self.notes.append(Note.objects.create(
                 title=f"Note title {i}",
@@ -49,7 +50,7 @@ class IndexTests(TestCase):
         self.client.login(email="test_user1@example.com", password="secret")
         index_page_url = reverse('notes:index')
         response = self.client.get(index_page_url)
-        for note in self.notes:
+        for note in response.context["latest_note_list"]:
             note_detail_url = reverse('notes:detail',
                 kwargs={'pk': note.pk})
             self.assertContains(response, f'href="{note_detail_url}"')
@@ -59,7 +60,7 @@ class IndexTests(TestCase):
         index_page_url = reverse('notes:index')
         response = self.client.get(index_page_url)
         notes = response.context["latest_note_list"]
-        self.assertEquals(len(notes), self.n)
+        self.assertEquals(len(notes), self.paginate_by)
 
         pub_date = notes[0].pub_date
         for note in notes[1:]:
@@ -72,6 +73,15 @@ class IndexTests(TestCase):
         response = self.client.get(index_page_url)
         notes = response.context["latest_note_list"]
         self.assertEquals(len(notes), 0)
+
+    def test_pagination_is_five(self):
+        self.client.login(email="test_user1@example.com", password="secret")
+        index_page_url = reverse('notes:index')
+        response = self.client.get(index_page_url)
+        notes = response.context["latest_note_list"]
+        self.assertTrue('is_paginated' in response.context)
+        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertEquals(len(notes), self.paginate_by)
 
 
 class DetailTests(TestCase):
