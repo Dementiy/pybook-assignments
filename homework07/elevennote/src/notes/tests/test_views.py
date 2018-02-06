@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 import datetime
 
 from notes.models import Note
-from notes.views import index, detail
+from notes.views import NoteList, NoteDetail
 
 User = get_user_model()
 
@@ -43,7 +43,7 @@ class IndexTests(TestCase):
 
     def test_index_url_resolves_index_view(self):
         view = resolve('/notes/')
-        self.assertEquals(view.func, index)
+        self.assertEquals(view.func.view_class, NoteList)
 
     def test_index_view_contains_link_to_details_page(self):
         self.client.login(email="test_user1@example.com", password="secret")
@@ -51,7 +51,7 @@ class IndexTests(TestCase):
         response = self.client.get(index_page_url)
         for note in self.notes:
             note_detail_url = reverse('notes:detail',
-                kwargs={'note_id': note.pk})
+                kwargs={'pk': note.pk})
             self.assertContains(response, f'href="{note_detail_url}"')
 
     def test_notes_ordered_by_pub_dates(self):
@@ -87,23 +87,23 @@ class DetailTests(TestCase):
             title="Note title", body="Note description", owner=self.test_user1)
 
     def test_redirect_if_not_logged_in(self):
-        detail_page_url = reverse('notes:detail', kwargs={'note_id': self.note.pk})
+        detail_page_url = reverse('notes:detail', kwargs={'pk': self.note.pk})
         response = self.client.get(detail_page_url)
         self.assertRedirects(response, f"/accounts/login/?next=/notes/{self.note.pk}/")
 
     def test_detail_view_status_code(self):
         self.client.login(email="test_user1@example.com", password="secret")
-        url = reverse('notes:detail', kwargs={'note_id': self.note.pk})
+        url = reverse('notes:detail', kwargs={'pk': self.note.pk})
         response = self.client.get(url)
         self.assertEquals(response.status_code, 200)
 
     def test_detail_url_resolves_detail_view(self):
         view = resolve(f'/notes/{self.note.pk}/')
-        self.assertEquals(view.func, detail)
+        self.assertEquals(view.func.view_class, NoteDetail)
 
     def test_only_owner_can_see_detail_page(self):
         self.client.login(email="test_user2@example.com", password="secret")
-        url = reverse('notes:detail', kwargs={'note_id': self.note.pk})
+        url = reverse('notes:detail', kwargs={'pk': self.note.pk})
         response = self.client.get(url)
         self.assertEquals(response.status_code, 404)
 

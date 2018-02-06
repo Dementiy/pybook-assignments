@@ -1,10 +1,10 @@
 from django.urls import path
 
-from . import views
+from .views import NoteList, NoteDetail
 
 app_name = 'notes'
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('<int:note_id>/', views.detail, name='detail'),
+    path('', NoteList.as_view(), name='index'),
+    path('<int:pk>/', NoteDetail.as_view(), name='detail'),
 ]
