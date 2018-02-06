@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 from django.contrib.auth import get_user_model
 
+import datetime
+
 from notes.models import Note
 from notes.views import index, detail
 
@@ -11,44 +13,97 @@ User = get_user_model()
 class IndexTests(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(
-            email="user@example.com",
+        self.test_user1 = User.objects.create_user(
+            email="test_user1@example.com",
             password="secret")
-        self.client.login(email="user@example.com", password="secret")
-        self.note = Note.objects.create(
-            title="Note title", body="Note description")
-        url = reverse('notes:index')
-        self.response = self.client.get(url)
+        self.test_user2 = User.objects.create_user(
+            email="test_user2@example.com",
+            password="secret")
+
+        now = datetime.datetime.now()
+        self.notes = []
+        self.n = 5
+        for i in range(self.n):
+            self.notes.append(Note.objects.create(
+                title=f"Note title {i}",
+                body="Note description",
+                pub_date=now + datetime.timedelta(days=i),
+                owner=self.test_user1))
+
+    def test_redirect_if_not_logged_in(self):
+        index_page_url = reverse('notes:index')
+        response = self.client.get(index_page_url)
+        self.assertRedirects(response, "/accounts/login/?next=/notes/")
 
     def test_index_view_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+        self.client.login(email="test_user1@example.com", password="secret")
+        index_page_url = reverse('notes:index')
+        response = self.client.get(index_page_url)
+        self.assertEquals(response.status_code, 200)
 
     def test_index_url_resolves_index_view(self):
         view = resolve('/notes/')
         self.assertEquals(view.func, index)
 
     def test_index_view_contains_link_to_details_page(self):
-        note_detail_url = reverse('notes:detail', kwargs={
-            'note_id': self.note.pk})
-        self.assertContains(self.response, f'href="{note_detail_url}"')
+        self.client.login(email="test_user1@example.com", password="secret")
+        index_page_url = reverse('notes:index')
+        response = self.client.get(index_page_url)
+        for note in self.notes:
+            note_detail_url = reverse('notes:detail',
+                kwargs={'note_id': note.pk})
+            self.assertContains(response, f'href="{note_detail_url}"')
+
+    def test_notes_ordered_by_pub_dates(self):
+        self.client.login(email="test_user1@example.com", password="secret")
+        index_page_url = reverse('notes:index')
+        response = self.client.get(index_page_url)
+        notes = response.context["latest_note_list"]
+        self.assertEquals(len(notes), self.n)
+
+        pub_date = notes[0].pub_date
+        for note in notes[1:]:
+            self.assertTrue(pub_date >= note.pub_date)
+            pub_date = note.pub_date
+
+    def test_only_owned_notes_in_list(self):
+        self.client.login(email="test_user2@example.com", password="secret")
+        index_page_url = reverse('notes:index')
+        response = self.client.get(index_page_url)
+        notes = response.context["latest_note_list"]
+        self.assertEquals(len(notes), 0)
 
 
 class DetailTests(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(
-            email="user@example.com",
+        self.test_user1 = User.objects.create_user(
+            email="test_user1@example.com",
             password="secret")
-        self.client.login(email="user@example.com", password="secret")
+        self.test_user2 = User.objects.create_user(
+            email="test_user2@example.com",
+            password="secret")
         self.note = Note.objects.create(
-            title="Note title", body="Note description")
-        url = reverse('notes:detail', kwargs={'note_id': self.note.pk})
-        self.response = self.client.get(url)
+            title="Note title", body="Note description", owner=self.test_user1)
+
+    def test_redirect_if_not_logged_in(self):
+        detail_page_url = reverse('notes:detail', kwargs={'note_id': self.note.pk})
+        response = self.client.get(detail_page_url)
+        self.assertRedirects(response, f"/accounts/login/?next=/notes/{self.note.pk}/")
 
     def test_detail_view_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
+        self.client.login(email="test_user1@example.com", password="secret")
+        url = reverse('notes:detail', kwargs={'note_id': self.note.pk})
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 200)
 
     def test_detail_url_resolves_detail_view(self):
         view = resolve(f'/notes/{self.note.pk}/')
         self.assertEquals(view.func, detail)
+
+    def test_only_owner_can_see_detail_page(self):
+        self.client.login(email="test_user2@example.com", password="secret")
+        url = reverse('notes:detail', kwargs={'note_id': self.note.pk})
+        response = self.client.get(url)
+        self.assertEquals(response.status_code, 404)
 
