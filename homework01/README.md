@@ -1,4 +1,4 @@
-## Шаблоны заданий для [первой работы](https://dementiy.gitbooks.io/-python/content/lab1.html)
+## Шаблоны заданий для [первой работы](https://dementiy.github.io/2017/11/22/01-cypher/)
 
 Проверить на соответствие pep8 можно так:
 ```
