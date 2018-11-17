@@ -64,56 +64,56 @@ class TestCellList(unittest.TestCase):
     def test_get_neighbours(self):
         clist = CellList.from_file('grid.txt')
         neighbours = clist.get_neighbours(Cell(2,3))
-        self.assertEquals(8, len(neighbours))
-        self.assertEquals(4, sum(c.is_alive() for c in neighbours))
+        self.assertEqual(8, len(neighbours))
+        self.assertEqual(4, sum(c.is_alive() for c in neighbours))
 
     def test_get_neighbours_for_upper_left_corner(self):
         clist = CellList.from_file('grid.txt')
         neighbours = clist.get_neighbours(Cell(0,0))
-        self.assertEquals(3, len(neighbours))
-        self.assertEquals(2, sum(c.is_alive() for c in neighbours))
+        self.assertEqual(3, len(neighbours))
+        self.assertEqual(2, sum(c.is_alive() for c in neighbours))
 
     def test_get_neighbours_for_upper_right_corner(self):
         clist = CellList.from_file('grid.txt')
         neighbours = clist.get_neighbours(Cell(0,7))
-        self.assertEquals(3, len(neighbours))
-        self.assertEquals(2, sum(c.is_alive() for c in neighbours))
+        self.assertEqual(3, len(neighbours))
+        self.assertEqual(2, sum(c.is_alive() for c in neighbours))
 
     def test_get_neighbours_for_lower_left_corner(self):
         clist = CellList.from_file('grid.txt')
         neighbours = clist.get_neighbours(Cell(5,0))
-        self.assertEquals(3, len(neighbours))
-        self.assertEquals(2, sum(c.is_alive() for c in neighbours))
+        self.assertEqual(3, len(neighbours))
+        self.assertEqual(2, sum(c.is_alive() for c in neighbours))
 
     def test_get_neighbours_for_lower_right_corner(self):
         clist = CellList.from_file('grid.txt')
         neighbours = clist.get_neighbours(Cell(5,7))
-        self.assertEquals(3, len(neighbours))
-        self.assertEquals(1, sum(c.is_alive() for c in neighbours))
+        self.assertEqual(3, len(neighbours))
+        self.assertEqual(1, sum(c.is_alive() for c in neighbours))
 
     def test_get_neighbours_for_upper_side(self):
         clist = CellList.from_file('grid.txt')
         neighbours = clist.get_neighbours(Cell(0,3))
-        self.assertEquals(5, len(neighbours))
-        self.assertEquals(4, sum(c.is_alive() for c in neighbours))
+        self.assertEqual(5, len(neighbours))
+        self.assertEqual(4, sum(c.is_alive() for c in neighbours))
 
     def test_get_neighbours_for_bottom_side(self):
         clist = CellList.from_file('grid.txt')
         neighbours = clist.get_neighbours(Cell(5,3))
-        self.assertEquals(5, len(neighbours))
-        self.assertEquals(4, sum(c.is_alive() for c in neighbours))
+        self.assertEqual(5, len(neighbours))
+        self.assertEqual(4, sum(c.is_alive() for c in neighbours))
 
     def test_get_neighbours_for_left_side(self):
         clist = CellList.from_file('grid.txt')
         neighbours = clist.get_neighbours(Cell(2,0))
-        self.assertEquals(5, len(neighbours))
-        self.assertEquals(2, sum(c.is_alive() for c in neighbours))
+        self.assertEqual(5, len(neighbours))
+        self.assertEqual(2, sum(c.is_alive() for c in neighbours))
 
     def test_get_neighbours_for_right_side(self):
         clist = CellList.from_file('grid.txt')
         neighbours = clist.get_neighbours(Cell(2,7))
-        self.assertEquals(5, len(neighbours))
-        self.assertEquals(2, sum(c.is_alive() for c in neighbours))
+        self.assertEqual(5, len(neighbours))
+        self.assertEqual(2, sum(c.is_alive() for c in neighbours))
 
     def test_can_update(self):
         clist = CellList.from_file('grid.txt')
