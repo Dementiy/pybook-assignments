@@ -27,18 +27,6 @@ def get_friends(user_id, fields):
     # PUT YOUR CODE HERE
 
 
-def age_predict(user_id):
-    """ Наивный прогноз возраста по возрасту друзей
-
-    Возраст считается как медиана среди возраста всех друзей пользователя
-
-    :param user_id: идентификатор пользователя
-    """
-    assert isinstance(user_id, int), "user_id must be positive integer"
-    assert user_id > 0, "user_id must be positive integer"
-    # PUT YOUR CODE HERE
-
-
 def messages_get_history(user_id, offset=0, count=20):
     """ Получить историю переписки с указанным пользователем
 
