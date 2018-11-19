@@ -6,7 +6,7 @@ from api import get_friends
 from api_models import User
 
 
-def age_predict(user_id) -> Optional[float]:
+def age_predict(user_id: int) -> Optional[float]:
     """ Наивный прогноз возраста по возрасту друзей
 
     Возраст считается как медиана среди возраста всех друзей пользователя
