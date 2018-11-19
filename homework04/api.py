@@ -38,11 +38,3 @@ def messages_get_history(user_id, offset=0, count=20):
     assert offset >= 0, "user_id must be positive integer"
     assert count >= 0, "user_id must be positive integer"
     # PUT YOUR CODE HERE
-
-
-def get_network(users_ids, as_edgelist=True):
-    # PUT YOUR CODE HERE
-
-
-def plot_graph(graph):
-    # PUT YOUR CODE HERE
