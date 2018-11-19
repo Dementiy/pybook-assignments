@@ -3,13 +3,6 @@ from datetime import datetime
 import plotly
 
 
-config = {
-    'VK_ACCESS_TOKEN': 'Tокен доступа для ВК',
-    'PLOTLY_USERNAME': 'Имя пользователя Plot.ly',
-    'PLOTLY_API_KEY': 'Ключ доступа Plot.ly'
-}
-
-
 def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
     """ Выполнить GET-запрос
 
