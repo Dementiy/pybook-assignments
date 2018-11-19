@@ -1,6 +1,4 @@
 import requests
-from datetime import datetime
-import plotly
 
 
 def get(url, params={}, timeout=5, max_retries=5, backoff_factor=0.3):
@@ -39,22 +37,6 @@ def messages_get_history(user_id, offset=0, count=20):
     assert isinstance(offset, int), "offset must be positive integer"
     assert offset >= 0, "user_id must be positive integer"
     assert count >= 0, "user_id must be positive integer"
-    # PUT YOUR CODE HERE
-
-
-def count_dates_from_messages(messages):
-    """ Получить список дат и их частот
-
-    :param messages: список сообщений
-    """
-    # PUT YOUR CODE HERE
-
-
-def plotly_messages_freq(freq_list):
-    """ Построение графика с помощью Plot.ly
-
-    :param freq_list: список дат и их частот
-    """
     # PUT YOUR CODE HERE
 
 
