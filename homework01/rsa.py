@@ -1,6 +1,5 @@
 import random
 
-
 def is_prime(n):
     """
     Tests to see if a number is prime.
@@ -13,6 +12,12 @@ def is_prime(n):
     False
     """
     # PUT YOUR CODE HERE
+    if n==1:
+        return False
+    for i in range(2,n):
+        if n%i == 0:
+            return False
+    return True
     pass
 
 
@@ -26,6 +31,14 @@ def gcd(a, b):
     1
     """
     # PUT YOUR CODE HERE
+    if  a< b:
+        c=a
+        a=b
+        b=c
+    while ( b!=0 ):
+        b= a%b
+        a=max(a,b)
+    return a
     pass
 
 
@@ -38,6 +51,10 @@ def multiplicative_inverse(e, phi):
     23
     """
     # PUT YOUR CODE HERE
+    for i in range(0,100000):
+        d= int (phi*i+1) / e
+        if d*e == (phi*i+1):
+            return d
     pass
 
 
@@ -49,9 +66,10 @@ def generate_keypair(p, q):
 
     # n = pq
     # PUT YOUR CODE HERE
-
+    n=p*q
     # phi = (p-1)(q-1)
     # PUT YOUR CODE HERE
+    phi=(p-1)*(q-1)
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
