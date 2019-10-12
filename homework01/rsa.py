@@ -1,9 +1,5 @@
-import random
-
-def is_prime(n):
+def is_prime(n: int) -> bool:
     """
-    Tests to see if a number is prime.
-
     >>> is_prime(2)
     True
     >>> is_prime(11)
@@ -11,78 +7,62 @@ def is_prime(n):
     >>> is_prime(8)
     False
     """
-    # PUT YOUR CODE HERE
-    if n==1:
+    if n = 1:
         return False
-    for i in range(2,n):
-        if n%i == 0:
+    for i in range(2, n):
+        if n % i == 0:
             return False
     return True
-    pass
 
 
-def gcd(a, b):
+def gcd(a: int, b: int) -> int:
     """
-    Euclid's algorithm for determining the greatest common divisor.
-
     >>> gcd(12, 15)
     3
     >>> gcd(3, 7)
     1
     """
-    # PUT YOUR CODE HERE
-    if  a< b:
-        c=a
-        a=b
-        b=c
-    while ( b!=0 ):
-        b= a%b
-        a=max(a,b)
+    while a != b:
+        if a > b:
+            a = a - b
+        else:
+            b = b - a
     return a
-    pass
 
 
-def multiplicative_inverse(e, phi):
+def multiplicative_inverse(e: int, phi: int) -> int:
     """
-    Euclid's extended algorithm for finding the multiplicative
-    inverse of two numbers.
-
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
-    for i in range(0,100000):
-        d= int (phi*i+1) / e
-        if d*e == (phi*i+1):
-            return d
-    pass
+    n = 1
+    while True:
+        if ((n * phi) + 1) % e == 0:
+            break
+        n += 1
+    d = int(((n * phi) + 1) / e)
+    return d
 
 
-def generate_keypair(p, q):
+def generate_keypair(p: int, q: int) -> tuple:
     if not (is_prime(p) and is_prime(q)):
         raise ValueError('Both numbers must be prime.')
     elif p == q:
         raise ValueError('p and q cannot be equal')
 
-    # n = pq
-    # PUT YOUR CODE HERE
-    n=p*q
-    # phi = (p-1)(q-1)
-    # PUT YOUR CODE HERE
-    phi=(p-1)*(q-1)
+    n = p * q
+
+    phi = (p - 1) * (q - 1)
 
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
 
-    # Use Euclid's Algorithm to verify that e and phi(n) are comprime
     g = gcd(e, phi)
     while g != 1:
         e = random.randrange(1, phi)
         g = gcd(e, phi)
-
-    # Use Extended Euclid's Algorithm to generate the private key
+        # Use Extended Euclid's Algorithm to generate the private key
     d = multiplicative_inverse(e, phi)
-
     # Return public and private keypair
     # Public key is (e, n) and private key is (d, n)
     return ((e, n), (d, n))
