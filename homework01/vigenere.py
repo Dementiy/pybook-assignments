@@ -54,7 +54,7 @@ def decrypt_vigenere(ciphertext, keyword):
                 plaintext+=chr(t)
         if ciphertext[i] >= 'a':
             if ciphertext[i]<='z':
-                t=ord(sciphertext[i])-ord(keyword[tro])+ord('a')
+                t=ord(ciphertext[i])-ord(keyword[tro])+ord('a')
                 if t < ord('a'):
                     t+=26
                 plaintext+=chr(t)
