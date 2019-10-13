@@ -1,12 +1,4 @@
 def is_prime(n: int) -> bool:
-    """
-    >>> is_prime(2)
-    True
-    >>> is_prime(11)
-    True
-    >>> is_prime(8)
-    False
-    """
     if n = 1:
         return False
     for i in range(2, n):
@@ -16,12 +8,6 @@ def is_prime(n: int) -> bool:
 
 
 def gcd(a: int, b: int) -> int:
-    """
-    >>> gcd(12, 15)
-    3
-    >>> gcd(3, 7)
-    1
-    """
     while a != b:
         if a > b:
             a = a - b
@@ -31,10 +17,6 @@ def gcd(a: int, b: int) -> int:
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
-    """
-    >>> multiplicative_inverse(7, 40)
-    23
-    """
     n = 1
     while True:
         if ((n * phi) + 1) % e == 0:
@@ -53,37 +35,25 @@ def generate_keypair(p: int, q: int) -> tuple:
     n = p * q
 
     phi = (p - 1) * (q - 1)
-
-    # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
 
     g = gcd(e, phi)
     while g != 1:
         e = random.randrange(1, phi)
         g = gcd(e, phi)
-        # Use Extended Euclid's Algorithm to generate the private key
     d = multiplicative_inverse(e, phi)
-    # Return public and private keypair
-    # Public key is (e, n) and private key is (d, n)
     return ((e, n), (d, n))
 
 
 def encrypt(pk, plaintext):
-    # Unpack the key into it's components
     key, n = pk
-    # Convert each letter in the plaintext to numbers based on
-    # the character using a^b mod m
     cipher = [(ord(char) ** key) % n for char in plaintext]
-    # Return the array of bytes
     return cipher
 
 
 def decrypt(pk, ciphertext):
-    # Unpack the key into its components
     key, n = pk
-    # Generate the plaintext based on the ciphertext and key using a^b mod m
     plain = [chr((char ** key) % n) for char in ciphertext]
-    # Return the array of bytes as a string
     return ''.join(plain)
 
 
