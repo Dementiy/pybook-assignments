@@ -1,63 +1,63 @@
-package caesar
+package vigenere
 
 import "testing"
 
 func TestEncryptVigenere(t *testing.T) {
 	result := EncryptVigenere("PYTHON", "A")
-	expected_result := "PYTHON"
+	expectedResult := "PYTHON"
 
-	if result != expected_result {
-		t.Fatalf("Expected '%s' but got '%s'", expected_result, result)
+	if result != expectedResult {
+		t.Fatalf("Expected '%s' but got '%s'", expectedResult, result)
 	}
 
 	result = EncryptVigenere("python", "a")
-	expected_result = "python"
+	expectedResult = "python"
 
-	if result != expected_result {
-		t.Fatalf("Expected '%s' but got '%s'", expected_result, result)
+	if result != expectedResult {
+		t.Fatalf("Expected '%s' but got '%s'", expectedResult, result)
 	}
 
 	result = EncryptVigenere("Python3.6", "a")
-	expected_result = "Python3.6"
+	expectedResult = "Python3.6"
 
-	if result != expected_result {
-		t.Fatalf("Expected '%s' but got '%s'", expected_result, result)
+	if result != expectedResult {
+		t.Fatalf("Expected '%s' but got '%s'", expectedResult, result)
 	}
 
 	result = EncryptVigenere("ATTACKATDAWN", "LEMON")
-	expected_result = "LXFOPVEFRNHR"
+	expectedResult = "LXFOPVEFRNHR"
 
-	if result != expected_result {
-		t.Fatalf("Expected '%s' but got '%s'", expected_result, result)
+	if result != expectedResult {
+		t.Fatalf("Expected '%s' but got '%s'", expectedResult, result)
 	}
 }
 
 func TestDecryptVigenere(t *testing.T) {
 	result := DecryptVigenere("PYTHON", "A")
-	expected_result := "PYTHON"
+	expectedResult := "PYTHON"
 
-	if result != expected_result {
-		t.Fatalf("Expected '%s' but got '%s'", expected_result, result)
+	if result != expectedResult {
+		t.Fatalf("Expected '%s' but got '%s'", expectedResult, result)
 	}
 
 	result = DecryptVigenere("python", "a")
-	expected_result = "python"
+	expectedResult = "python"
 
-	if result != expected_result {
-		t.Fatalf("Expected '%s' but got '%s'", expected_result, result)
+	if result != expectedResult {
+		t.Fatalf("Expected '%s' but got '%s'", expectedResult, result)
 	}
 
 	result = DecryptVigenere("Python3.6", "a")
-	expected_result = "Python3.6"
+	expectedResult = "Python3.6"
 
-	if result != expected_result {
-		t.Fatalf("Expected '%s' but got '%s'", expected_result, result)
+	if result != expectedResult {
+		t.Fatalf("Expected '%s' but got '%s'", expectedResult, result)
 	}
 
 	result = DecryptVigenere("LXFOPVEFRNHR", "LEMON")
-	expected_result = "ATTACKATDAWN"
+	expectedResult = "ATTACKATDAWN"
 
-	if result != expected_result {
-		t.Fatalf("Expected '%s' but got '%s'", expected_result, result)
+	if result != expectedResult {
+		t.Fatalf("Expected '%s' but got '%s'", expectedResult, result)
 	}
 }
