@@ -1,21 +1,33 @@
-## Шаблоны заданий для [первой работы](https://dementiy.github.io/2017/11/22/01-cypher/)
+## Шаблоны заданий для [первой работы](https://dementiy.github.io/assignments/cypher/)
 
-Проверить на соответствие pep8 можно так:
+Автоматическое форматирование при помощи [black](https://github.com/psf/black):
+
+```sh
+$ black -l 100 caesar.py vigenere.py rsa.py
 ```
-$ pep8 caesar.py
-$ pep8 vigenere.py
-$ pep8 rsa.py
+
+Автоматическая сортировка импортируемых модулей при помощи [isort](https://github.com/timothycrosley/isort):
+
+```sh
+$ isort caesar.py vigenere.py rsa.py
 ```
-Или так:
-```
-$ python -m pep8 caesar.py
-$ python -m pep8 vigenere.py
-$ python -m pep8 rsa.py
+
+Проверить аннотации типов при помощи [mypy](https://github.com/python/mypy):
+
+```sh
+$ mypy caesar.py vigenere.py rsa.py
 ```
 
 Запустить доктесты можно так:
-```
+
+```sh
 $ python -m doctest caesar.py
 $ python -m doctest vigenere.py
 $ python -m doctest rsa.py
+```
+
+Запустить юнит-тесты можно так:
+
+```sh
+$ python -m unittest discover
 ```
