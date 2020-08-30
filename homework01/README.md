@@ -26,8 +26,22 @@ $ python -m doctest vigenere.py
 $ python -m doctest rsa.py
 ```
 
-Запустить юнит-тесты можно так:
+Запустить юнит-тесты с помощью модуля [unittest](https://docs.python.org/3/library/unittest.html) можно так:
 
 ```sh
 $ python -m unittest discover
+```
+
+Или с помощью модуля [pytest](https://docs.pytest.org/en/stable/):
+
+```sh
+$ pytest tests/test_caesar.py
+$ pytest tests/test_vigenere.py
+$ pytest tests/test_rsa.py
+```
+
+Для запуска всех тестов:
+
+```sh
+$ pytest
 ```
