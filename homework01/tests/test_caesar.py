@@ -1,59 +1,53 @@
+import random
+import string
 import unittest
 
 import caesar
 
 
-class EncryptTestCase(unittest.TestCase):
-    def test_shift0(self):
+class CaesarTestCase(unittest.TestCase):
+    def test_encrypt(self):
         cases = [
-            ("", ""),
-            ("python", "python"),
-            ("PYTHON", "PYTHON"),
-            ("Python", "Python"),
-            ("Python3.6", "Python3.6"),
+            ("", 0, ""),
+            ("python", 0, "python"),
+            ("PYTHON", 0, "PYTHON"),
+            ("Python", 0, "Python"),
+            ("Python3.6", 0, "Python3.6"),
+            ("", 3, ""),
+            ("PYTHON", 3, "SBWKRQ"),
+            ("python", 3, "sbwkrq"),
+            ("Python", 3, "Sbwkrq"),
+            ("Python3.6", 3, "Sbwkrq3.6"),
         ]
 
-        for i, (plaintext, chiphertext) in enumerate(cases):
+        for i, (plaintext, shift, chiphertext) in enumerate(cases):
             with self.subTest(case=i, plaintext=plaintext, chiphertext=chiphertext):
-                self.assertEqual(chiphertext, caesar.encrypt_caesar(plaintext, shift=0))
+                self.assertEqual(chiphertext, caesar.encrypt_caesar(plaintext, shift=shift))
 
-    def test_shift3(self):
+    def test_decrypt(self):
         cases = [
-            ("", ""),
-            ("PYTHON", "SBWKRQ"),
-            ("python", "sbwkrq"),
-            ("Python", "Sbwkrq"),
-            ("Python3.6", "Sbwkrq3.6"),
+            ("", 0, ""),
+            ("python", 0, "python"),
+            ("PYTHON", 0, "PYTHON"),
+            ("Python", 0, "Python"),
+            ("Python3.6", 0, "Python3.6"),
+            ("", 3, ""),
+            ("SBWKRQ", 3, "PYTHON"),
+            ("sbwkrq", 3, "python"),
+            ("Sbwkrq", 3, "Python"),
+            ("Sbwkrq3.6", 3, "Python3.6"),
         ]
 
-        for i, (plaintext, chiphertext) in enumerate(cases):
-            with self.subTest(case=i, plaintext=plaintext, chiphertext=chiphertext):
-                self.assertEqual(chiphertext, caesar.encrypt_caesar(plaintext, shift=3))
-
-
-class DecryptTestCase(unittest.TestCase):
-    def test_shift0(self):
-        cases = [
-            ("", ""),
-            ("python", "python"),
-            ("PYTHON", "PYTHON"),
-            ("Python", "Python"),
-            ("Python3.6", "Python3.6"),
-        ]
-
-        for i, (chiphertext, plaintext) in enumerate(cases):
+        for i, (chiphertext, shift, plaintext) in enumerate(cases):
             with self.subTest(case=i, chiphertext=chiphertext, plaintext=plaintext):
-                self.assertEqual(plaintext, caesar.decrypt_caesar(chiphertext, shift=0))
+                self.assertEqual(plaintext, caesar.decrypt_caesar(chiphertext, shift=shift))
 
-    def test_shift3(self):
-        cases = [
-            ("", ""),
-            ("SBWKRQ", "PYTHON"),
-            ("sbwkrq", "python"),
-            ("Sbwkrq", "Python"),
-            ("Sbwkrq3.6", "Python3.6"),
-        ]
-
-        for i, (chiphertext, plaintext) in enumerate(cases):
-            with self.subTest(case=i, chiphertext=chiphertext, plaintext=plaintext):
-                self.assertEqual(plaintext, caesar.decrypt_caesar(chiphertext, shift=3))
+    def test_randomized(self):
+        shift = random.randint(8, 24)
+        plaintext = "".join(random.choice(string.ascii_letters + " -,") for _ in range(64))
+        ciphertext = caesar.encrypt_caesar(plaintext, shift=shift)
+        self.assertEqual(
+            plaintext,
+            caesar.decrypt_caesar(ciphertext, shift=shift),
+            msg=f"shift={shift}, ciphertext={ciphertext}",
+        )
