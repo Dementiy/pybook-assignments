@@ -3,8 +3,6 @@ import unittest
 
 import rsa
 
-random.seed(1234567)
-
 
 class RSATestCase(unittest.TestCase):
     def test_is_prime(self):
@@ -38,6 +36,7 @@ class RSATestCase(unittest.TestCase):
         self.assertEqual(1804547, rsa.multiplicative_inverse(9678731, 11181456))
 
     def test_generate_keypair(self):
+        random.seed(1234567)
         self.assertEqual(((121, 323), (169, 323)), rsa.generate_keypair(17, 19))
         self.assertEqual(((142169, 1697249), (734969, 1697249)), rsa.generate_keypair(1229, 1381))
         self.assertEqual(
