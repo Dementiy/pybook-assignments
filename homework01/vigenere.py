@@ -22,7 +22,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
             if ord(plaintext[i]) in range(65, 91) and  ord(newkey[i]) in range(65, 91) :
                 newchar = ((ord(plaintext[i]) - 65 + ord(newkey[i]) - 65 ) % 26) + 65
                 ciphertext += chr(newchar)
-            elif ord(plaintext[i]) in range(97, 122)  and  ord(newkey[i]) in range(97, 123):
+            elif ord(plaintext[i]) in range(97, 123)  and  ord(newkey[i]) in range(97, 123):
                 newchar = ((ord(plaintext[i]) - 97 + ord(newkey[i])- 97) % 26) + 97
                 ciphertext += chr(newchar)
             else:

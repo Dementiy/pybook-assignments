@@ -25,7 +25,7 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
                 newchar = ((ord(i) - 65 + shift) % 26) + 65
                 ciphertext += chr(newchar)
 
-            elif ord(i) in range(97, 122):
+            elif ord(i) in range(97, 123):
                 newchar = ((ord(i) - 97 + shift) % 26) + 97
                 ciphertext += chr(newchar)
             else:
