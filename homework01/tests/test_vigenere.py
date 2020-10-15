@@ -1,8 +1,7 @@
 import random
 import string
 import unittest
-
-from homework01 import vigenere
+import vigenere
 
 
 class VigenereTestCase(unittest.TestCase):
