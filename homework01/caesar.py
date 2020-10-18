@@ -1,46 +1,37 @@
-import typing as tp
-
-
 def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
-    """
-    Encrypts plaintext using a Caesar cipher.
-
-    >>> encrypt_caesar("PYTHON")
-    'SBWKRQ'
-    >>> encrypt_caesar("python")
-    'sbwkrq'
-    >>> encrypt_caesar("Python3.6")
-    'Sbwkrq3.6'
-    >>> encrypt_caesar("")
-    ''
-    """
+    i=0
     ciphertext = ""
-    # PUT YOUR CODE HERE
+    while i<len(plaintext):
+        a = o
+        if ord(ciphertext[i]) > ord('a') and ord(ciphertext[i]) < ord('z'):
+            a = ord(ciphertext[i])+shift
+            if a>ord('z'):
+                a=a-ord('z')+ord('a')-1
+            if a>ord('Z') and a<ord('a'):
+                a = a - ord('z') + ord('a') - 1
+        if a<1:
+            a=ord(ciphertext[i])
+        plaintext = plaintext + (chr(a))
+        i = i + 1
     return ciphertext
+print(encrypt_caesar('Python'))
 
 
 def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
-    """
-    Decrypts a ciphertext using a Caesar cipher.
-
-    >>> decrypt_caesar("SBWKRQ")
-    'PYTHON'
-    >>> decrypt_caesar("sbwkrq")
-    'python'
-    >>> decrypt_caesar("Sbwkrq3.6")
-    'Python3.6'
-    >>> decrypt_caesar("")
-    ''
-    """
+    i=0
     plaintext = ""
-    # PUT YOUR CODE HERE
+    while i<len(ciphertext):
+        a=o
+        if ord(ciphertext[i])>ord('a') and ord(ciphertext[i])<ord('z'):
+            a=ord(ciphertext[i])-shift
+            if a<ord('a') and a>ord('Z'):
+                a=a+ord('z')-ord('a')+1
+            if a ord('A'):
+                a=a+ord('z')-ord('a')+1
+        if a<1:
+            a=ord(ciphertext[i])
+        plaintext=plaintext+(chr(a))
+        i=i+1
+
     return plaintext
-
-
-def caesar_breaker_brute_force(ciphertext: str, dictionary: tp.Set[str]) -> int:
-    """
-    Brute force breaking a Caesar cipher.
-    """
-    best_shift = 0
-    # PUT YOUR CODE HERE
-    return best_shift
+print(decrypt_caesar('Sqwkrn'))
