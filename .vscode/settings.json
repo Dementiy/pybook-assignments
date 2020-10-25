@@ -1,0 +1,23 @@
+{
+    "editor.fontSize": 14,
+    "editor.fontFamily": "'Fira Code'",
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintArgs": [
+        "--enable=unused-import",
+        "--good-names=f,i,j,k,x,y,z",
+        "--disable=missing-module-docstring,missing-class-docstring,missing-function-docstring"
+    ],
+    "python.linting.mypyEnabled": true,
+    "python.linting.enabled": true,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length=100"
+    ],
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    "files.exclude": {
+        "**/.mypy_cache": true
+    }
+}
