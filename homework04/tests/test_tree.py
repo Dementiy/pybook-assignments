@@ -22,7 +22,9 @@ class WriteTreeTestCase(TestCase):
         animals = pathlib.Path("animals.txt")
         mode100644 = stat.S_IFREG | stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH
         self.fs.create_file(
-            animals, contents="Big blue basilisks bawl in the basement\n", st_mode=mode100644,
+            animals,
+            contents="Big blue basilisks bawl in the basement\n",
+            st_mode=mode100644,
         )
         add(gitdir, [animals])
         entries = read_index(gitdir)
@@ -52,7 +54,7 @@ class WriteTreeTestCase(TestCase):
         self.assertTrue(numbers_tree_obj.exists())
 
 
-@unittest.skipIf(pyvcs.__version_info__ < (0, 5, 0), "Нужна версия пакета 0.5.0 и выше")
+@unittest.skipIf(pyvcs.__version_info__ < (0, 6, 0), "Нужна версия пакета 0.6.0 и выше")
 class CommitTreeTestCase(TestCase):
     def setUp(self):
         self.setUpPyfakefs()

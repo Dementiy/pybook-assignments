@@ -4,7 +4,7 @@ import unittest
 from pyfakefs.fake_filesystem_unittest import TestCase
 
 import pyvcs
-from pyvcs.index import GitIndexEntry, add, read_index, write_index
+from pyvcs.index import GitIndexEntry, read_index, update_index, write_index
 from pyvcs.repo import repo_create
 
 
@@ -94,18 +94,18 @@ class WriteIndexTestCase(TestCase):
 
 
 @unittest.skipIf(pyvcs.__version_info__ < (0, 4, 0), "Нужна версия пакета 0.4.0 и выше")
-class AddTestCase(TestCase):
+class UpdateIndexTestCase(TestCase):
     def setUp(self):
         self.setUpPyfakefs()
 
-    def test_add(self):
+    def test_update_index(self):
         gitdir = repo_create(".")
         index = gitdir / "index"
         quote = pathlib.Path("quote.txt")
         self.fs.create_file(quote, contents="that's what she said")
 
         self.assertFalse(index.exists())
-        add(gitdir, [quote])
+        update_index(gitdir, [quote])
         self.assertTrue(index.exists())
         entries = read_index(gitdir)
         self.assertEqual(1, len(entries))
@@ -113,7 +113,7 @@ class AddTestCase(TestCase):
         obj_path = gitdir / "objects" / expected_sha[:2] / expected_sha[2:]
         self.assertTrue(obj_path.exists())
 
-    def test_add_many(self):
+    def test_update_index_many(self):
         gitdir = repo_create(".")
         index = gitdir / "index"
         letters = pathlib.Path("letters.txt")
@@ -122,7 +122,7 @@ class AddTestCase(TestCase):
         self.fs.create_file(digits, contents="1234567890")
 
         self.assertFalse(index.exists())
-        add(gitdir, [letters, digits])
+        update_index(gitdir, [letters, digits])
         self.assertTrue(index.exists())
         entries = read_index(gitdir)
         self.assertEqual(2, len(entries))
@@ -130,7 +130,7 @@ class AddTestCase(TestCase):
         names = [e.name for e in entries]
         self.assertEqual(["digits.txt", "letters.txt"], names)
 
-    def test_add_subdirs(self):
+    def test_update_index_subdirs(self):
         gitdir = repo_create(".")
         index = gitdir / "index"
         quote = pathlib.Path("quote.txt")
@@ -141,7 +141,7 @@ class AddTestCase(TestCase):
         self.fs.create_file(digits, contents="1234567890")
 
         self.assertFalse(index.exists())
-        add(gitdir, [quote, letters, digits])
+        update_index(gitdir, [quote, letters, digits])
         self.assertTrue(index.exists())
         entries = read_index(gitdir)
         self.assertEqual(3, len(entries))

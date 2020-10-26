@@ -174,3 +174,25 @@ class CatFileTestCase(TestCase):
         with patch("sys.stdout", new=io.StringIO()) as out:
             objects.cat_file(sha, pretty=True)
             self.assertEqual(expected_output, out.getvalue().strip())
+
+    @unittest.skipIf(pyvcs.__version_info__ < (0, 6, 0), "Нужна версия пакета 0.6.0 и выше")
+    def test_cat_commit_file(self):
+        gitdir = repo.repo_create(".")
+        obj = b"x\x9c\x95\x8dA\n\x021\x0c\x00=\xf7\x15\xb9\x0b\x92\x92ljA\xc4\x83\x1fI\xdb,\x16\xec.\x94.\xb8\xbf\x17\x14\x1f\xe0m.3\x93\xd7\xd6\xea\x00\x1f\xe80\xba\x19`&d\x942G5\x9d8\x85\xb9H\xe23\t\xb2\x0f6EMASL\xc9\xe96\x1ek\x87\xbb5[F\xdd\xe1\xf2\xa3\xdb\xaeK\xb1\xd7\xa9oW\xf0\x82\xc4\xc8$\x02G$D\x97?\xbba\x7f\x8b\xae.uT}\xc2\xb7\xe0\xde\xa159\x17"
+        sha = "faa73127e7a7b97faf08c147e69130a424c5ddbb"
+        obj_path = gitdir / "objects" / sha[:2] / sha[2:]
+        self.fs.create_file(obj_path, contents=obj)
+
+        expected_output = "\n".join(
+            [
+                "tree 0c30406df9aea54b7fd6b48360417e59ab7ab9bb",
+                "author Dementiy <Dementiy@yandex.ru> 1603404366 +0300",
+                "committer Dementiy <Dementiy@yandex.ru> 1603404366 +0300",
+                "",
+                "initial commit",
+            ]
+        )
+
+        with patch("sys.stdout", new=io.StringIO()) as out:
+            objects.cat_file(sha, pretty=True)
+            self.assertEqual(expected_output, out.getvalue().strip())
