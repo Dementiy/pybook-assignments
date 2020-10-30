@@ -1,21 +1,21 @@
 import pathlib
 import random
+import typing as tp
 
-from typing import List, Optional, Tuple
+import pygame
+from pygame.locals import *
 
-
-Cell = Tuple[int, int]
-Cells = List[int]
-Grid = List[Cells]
+Cell = tp.Tuple[int, int]
+Cells = tp.List[int]
+Grid = tp.List[Cells]
 
 
 class GameOfLife:
-    
     def __init__(
         self,
-        size: Tuple[int, int],
-        randomize: bool=True,
-        max_generations: Optional[float]=float('inf')
+        size: tp.Tuple[int, int],
+        randomize: bool = True,
+        max_generations: tp.Optional[float] = float("inf"),
     ) -> None:
         # Размер клеточного поля
         self.rows, self.cols = size
@@ -28,7 +28,7 @@ class GameOfLife:
         # Текущее число поколений
         self.generations = 1
 
-    def create_grid(self, randomize: bool=False) -> Grid:
+    def create_grid(self, randomize: bool = False) -> Grid:
         # Copy from previous assignment
         pass
 
@@ -61,7 +61,7 @@ class GameOfLife:
         pass
 
     @staticmethod
-    def from_file(filename: pathlib.Path) -> 'GameOfLife':
+    def from_file(filename: pathlib.Path) -> "GameOfLife":
         """
         Прочитать состояние клеток из указанного файла.
         """
