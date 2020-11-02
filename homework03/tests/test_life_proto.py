@@ -1,4 +1,5 @@
 import json
+import os
 import random
 import unittest
 from unittest.mock import MagicMock
@@ -99,7 +100,9 @@ class TestGameOfLife(unittest.TestCase):
         game = life_proto.GameOfLife(width=self.width, height=self.height, cell_size=1)
         game.grid = self.grid
 
-        with open("steps.txt") as f:
+        tests_dir = os.path.dirname(__file__)
+        steps_path = os.path.join(tests_dir, "steps.txt")
+        with open(steps_path) as f:
             steps = json.load(f)
 
         num_updates = 0
