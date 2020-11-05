@@ -1,3 +1,4 @@
+import random
 from typing import Tuple, List, Set, Optional
 
 
@@ -28,7 +29,8 @@ def group(values: List[str], n: int) -> List[List[str]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    pass
+    group_values = [values[i:i + n] for i in range(0, len(values), n)]
+    return group_values
 
 
 def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -41,7 +43,7 @@ def get_row(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0))
     ['.', '8', '9']
     """
-    pass
+    return grid[pos[0]]
 
 
 def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -54,7 +56,8 @@ def get_col(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2))
     ['3', '6', '9']
     """
-    pass
+    all_colls = [grid[i][pos[1]] for i in range(0, len(grid))]
+    return all_colls
 
 
 def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
@@ -68,6 +71,14 @@ def get_block(grid: List[List[str]], pos: Tuple[int, int]) -> List[str]:
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
+
+    row = 3 * int((pos[0] / 3))
+    column = 3 * int((pos[1] / 3))
+    square = []
+    for i in range(0, 3):
+        for j in range(0, 3):
+            square.append(grid[row + i][column + j])
+    return square
     pass
 
 
@@ -81,6 +92,13 @@ def find_empty_positions(grid: List[List[str]]) -> Optional[Tuple[int, int]]:
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
+    for i in range(0, len(grid)):
+        try:
+            index = grid[i].index(".")
+            return (i, index)
+        except ValueError:
+            index = 0
+    return (-1, -1)
     pass
 
 
@@ -95,7 +113,10 @@ def find_possible_values(grid: List[List[str]], pos: Tuple[int, int]) -> Set[str
     >>> values == {'2', '5', '9'}
     True
     """
-    pass
+    return set('123456789') \
+           - set(get_row(grid, pos)) \
+           - set(get_col(grid, pos)) \
+           - set(get_block(grid, pos))
 
 
 def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
@@ -111,13 +132,32 @@ def solve(grid: List[List[str]]) -> Optional[List[List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
-    pass
+    empty = find_empty_positions(grid)
+    if empty == (-1, -1):
+        return grid
+    possible = find_possible_values(grid, empty)
+
+    for el in possible:
+        grid[empty[0]][empty[1]] = el
+        anothersolution = solve(grid)
+        if anothersolution is not None:
+            return anothersolution
+    grid[empty[0]][empty[1]] = "."
+    return None
 
 
 def check_solution(solution: List[List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
-    # TODO: Add doctests with bad puzzles
-    pass
+    # TODO: Add doctests with bad puzzles\
+    checklist = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+    for el in range(0, 9):
+        if checklist != sorted(set(get_col(solution, (0, el)))) or checklist != sorted(set(get_row(solution, (el, 0)))):
+            return False
+    for i in (0, 3, 6):
+        for j in (0, 3, 6):
+            if checklist != sorted(set(get_block(solution, (i, j)))):
+                return False
+    return True
 
 
 def generate_sudoku(N: int) -> List[List[str]]:
@@ -142,7 +182,22 @@ def generate_sudoku(N: int) -> List[List[str]]:
     >>> check_solution(solution)
     True
     """
-    pass
+    empty_grid = ([["."] * 9 for i in range(0, 9)])
+    anekdot = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+    while len(anekdot)>0:
+        i=random.randint(0, 8)
+        ranchoice = random.choice(anekdot)
+        anekdot.remove(ranchoice)
+        empty_grid[i][random.randint(0, 8)] = ranchoice
+    grid = solve(empty_grid)
+    fin = 0
+    while fin < (81 - N):
+        row = random.randint(0, 8)
+        column = random.randint(0, 8)
+        if grid[row][column] != ".":
+            grid[row][column] = "."
+            fin += 1
+    return grid
 
 
 if __name__ == '__main__':
