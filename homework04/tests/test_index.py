@@ -9,6 +9,47 @@ from pyvcs.repo import repo_create
 
 
 @unittest.skipIf(pyvcs.__version_info__ < (0, 4, 0), "Нужна версия пакета 0.4.0 и выше")
+class GitIndexEntryTestCase(TestCase):
+    def test_pack(self):
+        entry = GitIndexEntry(
+            ctime_s=1593379228,
+            ctime_n=200331013,
+            mtime_s=1593379228,
+            mtime_n=200331013,
+            dev=16777220,
+            ino=8610507,
+            mode=33188,
+            uid=501,
+            gid=20,
+            size=4,
+            sha1=b"W\x16\xcaY\x87\xcb\xf9}k\xb5I \xbe\xa6\xad\xde$-\x87\xe6",
+            flags=7,
+            name="bar.txt",
+        )
+        expected_pack = b"^\xf9\t\x9c\x0b\xf0\xcf\x05^\xf9\t\x9c\x0b\xf0\xcf\x05\x01\x00\x00\x04\x00\x83b\xcb\x00\x00\x81\xa4\x00\x00\x01\xf5\x00\x00\x00\x14\x00\x00\x00\x04W\x16\xcaY\x87\xcb\xf9}k\xb5I \xbe\xa6\xad\xde$-\x87\xe6\x00\x07bar.txt\x00\x00\x00"
+        self.assertEqual(expected_pack, entry.pack())
+
+    def test_unpack(self):
+        pack = b"^\xf9\t\x9c\x0b\xf0\xcf\x05^\xf9\t\x9c\x0b\xf0\xcf\x05\x01\x00\x00\x04\x00\x83b\xcb\x00\x00\x81\xa4\x00\x00\x01\xf5\x00\x00\x00\x14\x00\x00\x00\x04W\x16\xcaY\x87\xcb\xf9}k\xb5I \xbe\xa6\xad\xde$-\x87\xe6\x00\x07bar.txt\x00\x00\x00"
+        expected_entry = GitIndexEntry(
+            ctime_s=1593379228,
+            ctime_n=200331013,
+            mtime_s=1593379228,
+            mtime_n=200331013,
+            dev=16777220,
+            ino=8610507,
+            mode=33188,
+            uid=501,
+            gid=20,
+            size=4,
+            sha1=b"W\x16\xcaY\x87\xcb\xf9}k\xb5I \xbe\xa6\xad\xde$-\x87\xe6",
+            flags=7,
+            name="bar.txt",
+        )
+        self.assertEqual(expected_entry, GitIndexEntry.unpack(pack))
+
+
+@unittest.skipIf(pyvcs.__version_info__ < (0, 4, 0), "Нужна версия пакета 0.4.0 и выше")
 class ReadIndexTestCase(TestCase):
     def setUp(self):
         self.setUpPyfakefs()
