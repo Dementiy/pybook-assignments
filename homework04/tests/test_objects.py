@@ -8,7 +8,7 @@ from unittest.mock import patch
 from pyfakefs.fake_filesystem_unittest import TestCase
 
 import pyvcs
-from pyvcs import index, objects, repo, tree
+from pyvcs import index, objects, porcelain, repo, tree
 
 
 @unittest.skipIf(pyvcs.__version_info__ < (0, 2, 0), "Нужна версия пакета 0.2.0 и выше")
@@ -158,7 +158,7 @@ class CatFileTestCase(TestCase):
         self.fs.create_file(letters, contents="abcdefg", st_mode=mode100644)
         digits = pathlib.Path("numbers") / "digits.txt"
         self.fs.create_file(digits, contents="1234567890", st_mode=mode100644)
-        index.add(gitdir, [quote, letters, digits])
+        porcelain.add(gitdir, [quote, letters, digits])
         entries = index.read_index(gitdir)
         sha = tree.write_tree(gitdir, entries)
         self.assertEqual("a9cde03408c68cbb205b038140b4c3a38aa1d01a", sha)
