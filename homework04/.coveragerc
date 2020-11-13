@@ -1,0 +1,12 @@
+[run]
+branch = True
+data_file = .coverage
+source = pyvcs
+omit = 
+    */tests/*
+
+[report]
+ignore_errors = True
+
+[xml]
+output = coverage.xml
