@@ -7,7 +7,7 @@ from unittest.mock import patch
 from pyfakefs.fake_filesystem_unittest import TestCase
 
 import pyvcs
-from pyvcs.index import add, read_index
+from pyvcs.index import read_index, update_index
 from pyvcs.repo import repo_create
 from pyvcs.tree import commit_tree, write_tree
 
@@ -26,7 +26,7 @@ class WriteTreeTestCase(TestCase):
             contents="Big blue basilisks bawl in the basement\n",
             st_mode=mode100644,
         )
-        add(gitdir, [animals])
+        update_index(gitdir, [animals], write=True)
         entries = read_index(gitdir)
         sha = write_tree(gitdir, entries)
         self.assertEqual("dc6b8ea09fb7573a335c5fb953b49b85bb6ca985", sha)
@@ -40,7 +40,7 @@ class WriteTreeTestCase(TestCase):
         self.fs.create_file(letters, contents="abcdefg", st_mode=mode100644)
         digits = pathlib.Path("numbers") / "digits.txt"
         self.fs.create_file(digits, contents="1234567890", st_mode=mode100644)
-        add(gitdir, [quote, letters, digits])
+        update_index(gitdir, [quote, letters, digits], write=True)
         entries = read_index(gitdir)
         sha = write_tree(gitdir, entries)
         self.assertEqual("a9cde03408c68cbb205b038140b4c3a38aa1d01a", sha)
