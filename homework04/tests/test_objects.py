@@ -148,7 +148,7 @@ class CatFileTestCase(TestCase):
             objects.cat_file("7e774cf533c51803125d4659f3488bd9dffc41a6", pretty=True)
             self.assertEqual("that's what she said", out.getvalue().strip())
 
-    @unittest.skipIf(pyvcs.__version_info__ < (1, 0, 0), "Нужна версия пакета 1.0.0 и выше")
+    @unittest.skipIf(pyvcs.__version_info__ < (0, 6, 0), "Нужна версия пакета 0.6.0 и выше")
     def test_cat_tree_file(self):
         gitdir = repo.repo_create(".")
         mode100644 = stat.S_IFREG | stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH
@@ -158,7 +158,7 @@ class CatFileTestCase(TestCase):
         self.fs.create_file(letters, contents="abcdefg", st_mode=mode100644)
         digits = pathlib.Path("numbers") / "digits.txt"
         self.fs.create_file(digits, contents="1234567890", st_mode=mode100644)
-        porcelain.add(gitdir, [quote, letters, digits])
+        index.update_index(gitdir, [quote, letters, digits], write=True)
         entries = index.read_index(gitdir)
         sha = tree.write_tree(gitdir, entries)
         self.assertEqual("a9cde03408c68cbb205b038140b4c3a38aa1d01a", sha)
