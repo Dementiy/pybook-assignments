@@ -1,6 +1,4 @@
-import io
 import unittest
-from unittest.mock import patch
 
 from hello import get_greeting
 
