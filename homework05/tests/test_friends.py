@@ -1,5 +1,3 @@
-import json
-import random
 import re
 import time
 import unittest
@@ -28,7 +26,9 @@ class FriendsTestCase(unittest.TestCase):
         target_uid = 456
         responses.add(
             responses.GET,
-            re.compile(f"https://api.vk.com/method/friends.getMutual\?.*target_uid={target_uid}.*"),
+            re.compile(
+                f"https://api.vk.com/method/friends.getMutual\?.*target_uid={target_uid}.*"
+            ),
             match_querystring=True,
             json={"response": common_friends},
             status=200,
