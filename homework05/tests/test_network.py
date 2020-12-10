@@ -2,6 +2,7 @@ import re
 import unittest
 
 import responses
+
 from research.network import ego_network
 
 
@@ -46,6 +47,15 @@ class EgoNetworkTestCase(unittest.TestCase):
             },
             status=200,
         )
-        expected_edges = [(1, 2), (1, 3), (2, 1), (2, 3), (2, 4), (3, 1), (3, 2), (4, 2)]
+        expected_edges = [
+            (1, 2),
+            (1, 3),
+            (2, 1),
+            (2, 3),
+            (2, 4),
+            (3, 1),
+            (3, 2),
+            (4, 2),
+        ]
         edges = ego_network(target_uids)
         self.assertEqual(set(expected_edges), set(edges))
