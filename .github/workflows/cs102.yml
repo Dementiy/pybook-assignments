@@ -23,13 +23,13 @@ jobs:
         fi
     - name: Run isort
       run: |
-        isort -c --diff -e -w 100 ${{ github.head_ref }}
+        isort -c --diff --profile black ${{ github.head_ref }}
     - name: Run black
       run: |
         black -l 100 --check --diff --color --exclude "test*" ${{ github.head_ref }}
     - name: Run mypy
       run: |
-        mypy ${{ github.head_ref }}
+        mypy --ignore-missing-imports ${{ github.head_ref }}
     - name: Run pylint
       run: |
         pylint --disable=missing-docstring --variable-rgx="[a-z0-9_]{1,30}$" --argument-rgx="^[a-z][a-z0-9]*((_[a-z0-9]+)*)?$" --ignore-patterns="test_.*?py" --exit-zero ${{ github.head_ref }}
