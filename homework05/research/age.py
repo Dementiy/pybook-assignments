@@ -14,4 +14,4 @@ def age_predict(user_id: int) -> tp.Optional[float]:
     :param user_id: Идентификатор пользователя.
     :return: Медианный возраст пользователя.
     """
-    ...
+    pass
