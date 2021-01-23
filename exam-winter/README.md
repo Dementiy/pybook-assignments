@@ -59,7 +59,7 @@ collected 1 item
 
 test_add.py .                                           [100%]
 ===================== 1 passed in 0.09s =====================
-$ coverage report -m test_add.py 
+$ coverage run -m pytest test_add.py && coverage report -m test_add.py 
 Name          Stmts   Miss  Cover   Missing
 -------------------------------------------
 test_add.py       3      0   100%
