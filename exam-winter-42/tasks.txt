@@ -1,0 +1,14 @@
+task1
+A -> B
+B -> C
+C -> B
+
+task2
+A -> A
+B -> C
+C -> A
+
+task3
+A -> A
+B -> B
+
