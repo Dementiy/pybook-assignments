@@ -1,0 +1,226 @@
+{
+	"info": {
+		"_postman_id": "c45e20a8-5598-4444-b0d8-08548c11cee2",
+		"name": "Notes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Loign",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"var token = responseJson.token;",
+							"pm.collectionVariables.set(\"authToken\", token)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"dementiy@yandex.ru\"\n}"
+				},
+				"url": {
+					"raw": "http://{{notes_app}}/api/jwt-auth/",
+					"protocol": "http",
+					"host": [
+						"{{notes_app}}"
+					],
+					"path": [
+						"api",
+						"jwt-auth",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create note",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"var noteId = responseJson.id;",
+							"pm.collectionVariables.set(\"lastNoteId\", noteId)",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Note title 3\",\n    \"body\": \"Note body 3\"\n}"
+				},
+				"url": {
+					"raw": "http://{{notes_app}}/api/notes",
+					"protocol": "http",
+					"host": [
+						"{{notes_app}}"
+					],
+					"path": [
+						"api",
+						"notes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get notes list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{notes_app}}/api/notes",
+					"protocol": "http",
+					"host": [
+						"{{notes_app}}"
+					],
+					"path": [
+						"api",
+						"notes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get note by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{notes_app}}/api/notes/{{lastNoteId}}",
+					"protocol": "http",
+					"host": [
+						"{{notes_app}}"
+					],
+					"path": [
+						"api",
+						"notes",
+						"{{lastNoteId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update note",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"New note title\",\n    \"body\": \"New note body\"\n}"
+				},
+				"url": {
+					"raw": "http://{{notes_app}}/api/notes/{{lastNoteId}}",
+					"protocol": "http",
+					"host": [
+						"{{notes_app}}"
+					],
+					"path": [
+						"api",
+						"notes",
+						"{{lastNoteId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "notes_app",
+			"value": "127.0.0.1:8080"
+		},
+		{
+			"key": "authToken",
+			"value": ""
+		},
+		{
+			"key": "lastNoteId",
+			"value": ""
+		}
+	]
+}
