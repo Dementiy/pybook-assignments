@@ -1,5 +1,5 @@
 responses==0.12.1
-requests==2.24.0
+requests==2.31.0
 httpretty==1.0.2
 tqdm==4.52.0
 networkx==2.5
